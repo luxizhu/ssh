@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/photo/handlePhoto.action">
+   图片： <img src="/images/mr.jpg" width="440" height="360"/><br/>
+    <input name="imgSrc" type="hidden" value="${imgSrc}"/><br/>
+    水印文字：<input type="text" name="font" size="40"/><br/>
+    文字大小：<input type="text" name="fontSize" size="6"/><br/>
+    x坐标：<input type="text" name="x" size="6"/><br/>
+    y坐标：<input type="text" name="y" size="6"/><br/>
+    角度：<input type="text" name="s" size="6"/><br/>
+    水印效果1：<input type="radio" name="randiobutton" value="type1"/>
+    水印效果2：<input type="radio" name="randiobutton" value="type2"/><br/>
+    <input type="submit" value="提交"/>
+    <input type="reset" value="重置"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script type="text/javascript" src="/js/jquery-3.1.0.min.js"></script>-->
+</head>
+<body>
+<img src="/chinese/getRandomCode.action" name="chineseCheckCode" width="166" height="45" border="1" id="chineseCheckCode" onclick="getRandomCode()"/>
+</body>
+<script>
+    function getRandomCode(){
+//       $("#chineseCheckCode").prop("src","/chinese/getRandomCode.action?id="+Math.random());
+        document.getElementById("chineseCheckCode").src=document.getElementById("chineseCheckCode").src+"&nocache="+new Date().getTime();
+    }
+</script>
+</html>
