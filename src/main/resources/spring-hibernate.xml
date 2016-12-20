@@ -125,4 +125,5 @@
             <security:filter-chain pattern="/*" filters="filter_flux" />
         </security:filter-chain-map>
     </bean>-->
+
 </beans>
