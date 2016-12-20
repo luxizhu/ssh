@@ -2,3 +2,5 @@ target/
 ssh.iml
 .idea
 example.log
+out/
+src/main/webapp/file/

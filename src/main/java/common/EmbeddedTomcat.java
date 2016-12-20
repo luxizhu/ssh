@@ -15,9 +15,9 @@ import java.io.File;
  */
 public class EmbeddedTomcat {
     private final Log log = LogFactory.getLog(getClass());
-    private String PROJECT_PATH = "E:\\project\\ssh(springmvc)";
+    private String PROJECT_PATH = "E:\\project\\ssh";
     private String contextPath = "/";//WEB上下文名称
-    private String WEB_APP_PATH = PROJECT_PATH + File.separatorChar +"\\ssh\\src\\main\\webapp";
+    private String WEB_APP_PATH = PROJECT_PATH + File.separatorChar +"\\src\\main\\webapp";
     private String CATALINA_HOME = PROJECT_PATH +"\\Embedded\\Tomcat";
 
     private Tomcat tomcat = new Tomcat();//嵌入式Tomcat
