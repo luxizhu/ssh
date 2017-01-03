@@ -2,17 +2,21 @@ package controller;
 
 import entity.Song;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import service.SongService;
+import util.PinYinUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +28,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/con")
 public class mainController {
+
+    @Autowired
+    private SongService songService;
 
     @RequestMapping("onLineMusic.action")
     public String onlineMusic(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
@@ -74,7 +81,6 @@ public class mainController {
     @RequestMapping("uploadMusic.action")
     public String uploadMusic(@RequestParam(value="myFile") MultipartFile file, HttpServletRequest request, ModelMap model)
             throws IOException {
-        //第一种方法
         /*if (file.isEmpty()) {
             System.out.println("文件未上传");
         } else {
@@ -83,25 +89,52 @@ public class mainController {
             System.out.println("文件名称: " + file.getName());
             System.out.println("文件原名: " + file.getOriginalFilename());
             System.out.println("========================================");
+            InputStream inputStream = file.getInputStream();
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            Song song = new Song();
+            song.setSongName(file.getName());
+            song.setSongType(file.getContentType());
+            song.setContent(bytes);
+            songService.saveSong(song);
+        }*/
+
+        //第一种方法
+        if (file.isEmpty()) {
+            System.out.println("文件未上传");
+        } else {
+            System.out.println("文件长度: " + file.getSize());
+            System.out.println("文件类型: " + file.getContentType());
+            System.out.println("文件名称: " + file.getName());
+            System.out.println("文件原名: " + file.getOriginalFilename());
+            System.out.println("========================================");
+
+            String fileName = turnNameToABC(file.getOriginalFilename());
             //如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中
             String realPath = request.getSession().getServletContext().getRealPath("file/music");
             //这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(realPath, file.getOriginalFilename()));
-        }*/
+        }
         //第二种方法
-        String realPath = request.getSession().getServletContext().getRealPath("file/music");
-        File pack = new File(realPath);
-        if(!pack.exists()){
-            pack.mkdirs();
-        }
-        String fileName = file.getOriginalFilename();
-        System.out.println(realPath);
-        File targetFile = new File(realPath, fileName);
-        try{
-            file.transferTo(targetFile);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        String realPath = request.getSession().getServletContext().getRealPath("file/music");
+//        File pack = new File(realPath);
+//        if(!pack.exists()){
+//            pack.mkdirs();
+//        }
+//        String fileName = file.getOriginalFilename();
+//        System.out.println(realPath);
+//        File targetFile = new File(realPath, fileName);
+//        try{
+//            file.transferTo(targetFile);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         return "redirect:/con/listMusic.action";
+    }
+
+    private String turnNameToABC(String name){
+        name = name.substring(0,name.indexOf("."));
+        name = PinYinUtil.getFullSpell(name);
+        System.out.println(name);
+        return name;
     }
 }
