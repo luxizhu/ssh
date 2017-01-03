@@ -1,5 +1,9 @@
 package dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import javax.annotation.Resource;
 import java.sql.*;
 
 /**
@@ -14,6 +18,21 @@ public class BaseDao {
     public Connection conn = null;
     public PreparedStatement pst = null;
     public ResultSet rs = null;
+
+    @Resource
+    private SessionFactory sessionFactory;
+
+    public Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public BaseDao(String sql) {
         try {
